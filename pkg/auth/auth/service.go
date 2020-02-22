@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"context"
 	"errors"
 
 	"github.com/joshuabezaleel/small-microservices/pkg/auth/pkg"
@@ -14,7 +15,7 @@ var (
 
 // Service provides basic operations for Auth service.
 type Service interface {
-	Login(loginReq *LoginRequest) (bool, error)
+	Login(ctx context.Context, loginReq *LoginRequest) (bool, error)
 	// GetStoredPasswordByUsername(username string) (string, error)
 	// ComparePassword(incomingPassword, storedPassword string) (bool, error)
 }
@@ -31,10 +32,10 @@ func NewAuthService(userService pkg.UserServiceClient) Service {
 	}
 }
 
-func (s *service) Login(loginReq *LoginRequest) (bool, error) {
+func (s *service) Login(ctx context.Context, loginReq *LoginRequest) (bool, error) {
 	var user *pkg.User
 
-	user, err := s.userService.Get(loginReq.Username)
+	user, err := s.userService.Get(ctx, loginReq.Username)
 	if err != nil {
 		return false, ErrLogin
 	}

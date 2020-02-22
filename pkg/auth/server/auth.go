@@ -26,7 +26,9 @@ func (handler *authHandler) login(w http.ResponseWriter, r *http.Request) {
 	}
 	defer r.Body.Close()
 
-	isAuthorized, err := handler.authService.Login(&loginReq)
+	ctx := r.Context()
+
+	isAuthorized, err := handler.authService.Login(ctx, &loginReq)
 	if err != nil {
 		respondWithError(w, http.StatusInternalServerError, err.Error())
 		return

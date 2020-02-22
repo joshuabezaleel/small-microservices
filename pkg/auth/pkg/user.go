@@ -1,9 +1,11 @@
 package pkg
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 )
 
@@ -22,14 +24,22 @@ type UserServiceClient struct {
 }
 
 // Get retrieves user using user service with specified username.
-func (us *UserServiceClient) Get(username string) (*User, error) {
+func (us *UserServiceClient) Get(ctx context.Context, username string) (*User, error) {
 	var user *User
 
-	url := fmt.Sprintf("%s/users/%s", us.UserServiceAddr, username)
+	url := fmt.Sprintf("http://localhost%s/users/%s", us.UserServiceAddr, username)
 	req, _ := http.NewRequest("GET", url, nil)
+	req = req.WithContext(ctx)
+
+	// urlWithNoPort := fmt.Sprintf("http://users/%s", username)
+	// req, _ := http.NewRequest("GET", urlWithNoPort, nil)
+	// req = req.WithContext(ctx)
+	log.Println(req)
+	log.Println(url)
 
 	resp, err := us.Client.Do(req)
 	if err != nil {
+		log.Printf("error = %v\n", err.Error())
 		return nil, err
 	}
 	defer resp.Body.Close()
