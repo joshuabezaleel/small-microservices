@@ -3,7 +3,6 @@ package server
 import (
 	"encoding/json"
 	"net/http"
-	"strconv"
 
 	"github.com/joshuabezaleel/small-microservices/pkg/user/user"
 
@@ -16,7 +15,7 @@ type userHandler struct {
 
 func (handler *userHandler) registerRouter(router *mux.Router) {
 	router.HandleFunc("/users", handler.getAllUsers).Methods("GET")
-	router.HandleFunc("/users/{ID}", handler.getUser).Methods("GET")
+	router.HandleFunc("/users/{username}", handler.getUser).Methods("GET")
 }
 
 func (handler *userHandler) getAllUsers(w http.ResponseWriter, r *http.Request) {
@@ -31,15 +30,15 @@ func (handler *userHandler) getAllUsers(w http.ResponseWriter, r *http.Request) 
 
 func (handler *userHandler) getUser(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	userIDString, ok := vars["ID"]
+	username, ok := vars["username"]
 	if !ok {
 		respondWithError(w, http.StatusBadRequest, "Invalid URL path")
 		return
 	}
 
-	userID, _ := strconv.Atoi(userIDString)
+	// userID, _ := strconv.Atoi(userIDString)
 
-	user, err := handler.userService.Get(userID)
+	user, err := handler.userService.GetByUsername(username)
 	if err != nil {
 		respondWithError(w, http.StatusInternalServerError, err.Error())
 		return

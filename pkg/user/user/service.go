@@ -11,6 +11,7 @@ var (
 // Service provides basic operations on User domain model.
 type Service interface {
 	Get(ID int) (*User, error)
+	GetByUsername(username string) (*User, error)
 	GetAll() ([]*User, error)
 }
 
@@ -28,6 +29,15 @@ func NewUserService(userRepository Repository) Service {
 
 func (s *service) Get(ID int) (*User, error) {
 	user, err := s.userRepository.Get(ID)
+	if err != nil {
+		return nil, ErrGetUser
+	}
+
+	return user, nil
+}
+
+func (s *service) GetByUsername(username string) (*User, error) {
+	user, err := s.userRepository.GetByUsername(username)
 	if err != nil {
 		return nil, ErrGetUser
 	}

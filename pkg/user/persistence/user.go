@@ -38,6 +38,18 @@ func (repo *userRepository) Get(ID int) (*user.User, error) {
 	return nil, errors.New("User not found")
 }
 
+func (repo *userRepository) GetByUsername(username string) (*user.User, error) {
+	allUsers := populateUsers()
+
+	for _, eachUser := range allUsers {
+		if eachUser.Username == username {
+			return eachUser, nil
+		}
+	}
+
+	return nil, errors.New("User not found")
+}
+
 func (repo *userRepository) GetAll() ([]*user.User, error) {
 	allUsers := populateUsers()
 
