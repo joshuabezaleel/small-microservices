@@ -36,8 +36,6 @@ func (handler *userHandler) getUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// userID, _ := strconv.Atoi(userIDString)
-
 	user, err := handler.userService.GetByUsername(username)
 	if err != nil {
 		respondWithError(w, http.StatusInternalServerError, err.Error())
