@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 )
 
@@ -31,8 +32,13 @@ func (us *UserServiceClient) Get(ctx context.Context, username string) (*User, e
 	req, _ := http.NewRequest("GET", url, nil)
 	req = req.WithContext(ctx)
 
+	log.Println(url)
+	log.Println(req)
+
 	resp, err := us.Client.Do(req)
 	if err != nil {
+		log.Println("masuk sini")
+		log.Println(err)
 		return nil, err
 	}
 	defer resp.Body.Close()
