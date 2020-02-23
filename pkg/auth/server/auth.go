@@ -2,7 +2,6 @@ package server
 
 import (
 	"encoding/json"
-	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -31,7 +30,6 @@ func (handler *authHandler) login(w http.ResponseWriter, r *http.Request) {
 
 	isAuthorized, err := handler.authService.Login(ctx, &loginReq)
 	if err != nil {
-		log.Println("masuk sini")
 		respondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}

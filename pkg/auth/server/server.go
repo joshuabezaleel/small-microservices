@@ -35,8 +35,8 @@ func NewServer(authService auth.Service) *Server {
 }
 
 // Run runs the HTTP server with the specified port and router.
-func (srv *Server) Run() {
-	var port = ":8083"
+func (srv *Server) Run(port string) {
+	port = ":" + port
 
 	log.Println("authService is running on port " + port)
 	err := http.ListenAndServe(port, srv.Router)

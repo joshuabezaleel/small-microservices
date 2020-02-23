@@ -3,7 +3,6 @@ package auth
 import (
 	"context"
 	"errors"
-	"log"
 
 	"github.com/joshuabezaleel/small-microservices/pkg/auth/pkg"
 )
@@ -40,11 +39,6 @@ func (s *service) Login(ctx context.Context, loginReq *LoginRequest) (bool, erro
 	if err != nil {
 		return false, ErrLogin
 	}
-	log.Println("dor")
-	log.Println(user)
-	log.Printf("user.Password = %v\n", &user.Password)
-	log.Printf("loginReq.Password = %v\n", loginReq.Password)
-	log.Println("dor 2")
 
 	if user.Password != loginReq.Password {
 		return false, ErrAuth
