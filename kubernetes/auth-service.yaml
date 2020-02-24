@@ -7,33 +7,33 @@ spec:
   selector:
     matchLabels:
       app: auth-service
-    template:
-      metadata:
-        labels:
-          app: auth-service
-      spec:
-        terminationGracePeriodSeconds: 5
-        containers:
-          - name: auth-service
-            image: auth-service
-            ports:
-              - containerPort: 8083
-            env: 
-            - name: AUTH_SERVICE_PORT
-              value: "8083"
-            - name: USER_SERVICE_PORT
+  template:
+    metadata:
+      labels:
+        app: auth-service
+    spec:
+      terminationGracePeriodSeconds: 5
+      containers:
+        - name: auth-service
+          image: auth-service
+          ports:
+            - containerPort: 8083
+          env: 
+          - name: AUTH_SERVICE_PORT
             value: "8083"
-            - name: USER_SERVICE_HOST
-            value: user-service
+          - name: USER_SERVICE_PORT
+          value: "8083"
+          - name: USER_SERVICE_HOST
+          value: user-service
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: user-service
+  name: auth-service
 spec:
   type: ClusterIP
   selector:
-    app: user-service
+    app: auth-service
   ports:
     - port: 8083
         
